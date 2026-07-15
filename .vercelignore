@@ -1,0 +1,8 @@
+.git/
+.github/
+.vercel/
+screenshots/
+scripts/
+README.md
+assets/*.jpeg
+assets/DS_Store

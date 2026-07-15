@@ -1,0 +1,9 @@
+.vercel/
+node_modules/
+screenshots/
+__pycache__/
+*.py[cod]
+.DS_Store
+assets/DS_Store
+assets/*.jpeg
+
