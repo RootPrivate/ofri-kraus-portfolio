@@ -80,11 +80,10 @@ document.querySelectorAll('.media-button img').forEach((image) => {
 if (!reducedMotion && window.matchMedia('(hover: hover)').matches) {
   const tiltTargets = [
     ...document.querySelectorAll('.hero-stage'),
-    ...document.querySelectorAll('.media-button'),
   ];
 
   tiltTargets.forEach((target) => {
-    const strength = target.classList.contains('hero-stage') ? 5 : 3.5;
+    const strength = 5;
 
     target.addEventListener('pointermove', (event) => {
       const rect = target.getBoundingClientRect();

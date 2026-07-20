@@ -593,7 +593,7 @@ p {
   border: 0;
   border-radius: var(--radius-media);
   background: var(--color-surface);
-  cursor: zoom-in;
+  cursor: pointer;
   isolation: isolate;
 }
 
@@ -1585,8 +1585,7 @@ body::before {
   position: absolute;
   inset-block: 2% 4%;
   inset-inline: 16% 18%;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  display: block;
   overflow: hidden;
   padding: 12px;
   border: 1px solid rgba(225, 240, 247, 0.22);
@@ -1620,28 +1619,6 @@ body::before {
   filter: saturate(0.86) contrast(1.05);
 }
 
-.hero-stage-topline,
-.hero-stage-caption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  direction: ltr;
-  color: #cbd6db;
-  font-family: "Heebo", Arial, sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.hero-stage-topline {
-  padding: 2px 2px 12px;
-}
-
-.hero-stage-caption {
-  padding: 12px 2px 2px;
-  color: #8f9ca3;
-}
-
 .hero-stage-float {
   position: absolute;
   overflow: hidden;
@@ -1655,20 +1632,9 @@ body::before {
 
 .hero-stage-float img {
   width: 100%;
-  height: calc(100% - 25px);
+  height: 100%;
   border-radius: 10px;
   object-fit: cover;
-}
-
-.hero-stage-float span {
-  display: block;
-  padding-block-start: 8px;
-  direction: ltr;
-  color: #aab6bc;
-  font-family: "Heebo", Arial, sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1;
 }
 
 .hero-stage-float-one {
@@ -1852,30 +1818,19 @@ body::before {
 }
 
 .media-button {
-  --tilt-x: 0deg;
-  --tilt-y: 0deg;
-  --media-lift: 0px;
   overflow: hidden;
   border: 1px solid rgba(225, 240, 247, 0.1);
   border-radius: 13px;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.08) inset,
     0 14px 30px rgba(0, 5, 10, 0.28);
-  transform: perspective(900px) translateY(var(--media-lift)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
-  transform-style: preserve-3d;
   transition:
-    transform 360ms var(--ease-out),
     border-color 220ms var(--ease-standard),
     box-shadow 320ms var(--ease-standard);
 }
 
-.media-button.is-tilting {
-  transition-duration: 80ms;
-}
-
 .media-button:hover,
 .media-button:focus-visible {
-  --media-lift: -3px;
   border-color: rgba(58, 105, 99, 0.54);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.12) inset,
@@ -2168,11 +2123,6 @@ body::before {
     padding: 9px;
     border-radius: 18px;
     transform: translateZ(42px) rotateY(3deg);
-  }
-
-  .hero-stage-topline,
-  .hero-stage-caption {
-    font-size: 8px;
   }
 
   .hero-stage-float-one {
