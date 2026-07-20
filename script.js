@@ -77,6 +77,32 @@ document.querySelectorAll('.media-button img').forEach((image) => {
   );
 });
 
+if (!reducedMotion && window.matchMedia('(hover: hover)').matches) {
+  const tiltTargets = [
+    ...document.querySelectorAll('.hero-stage'),
+    ...document.querySelectorAll('.media-button'),
+  ];
+
+  tiltTargets.forEach((target) => {
+    const strength = target.classList.contains('hero-stage') ? 5 : 3.5;
+
+    target.addEventListener('pointermove', (event) => {
+      const rect = target.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      target.style.setProperty('--tilt-x', `${(-y * strength).toFixed(2)}deg`);
+      target.style.setProperty('--tilt-y', `${(x * strength).toFixed(2)}deg`);
+      target.classList.add('is-tilting');
+    });
+
+    target.addEventListener('pointerleave', () => {
+      target.style.setProperty('--tilt-x', '0deg');
+      target.style.setProperty('--tilt-y', '0deg');
+      target.classList.remove('is-tilting');
+    });
+  });
+}
+
 const navLinks = [...primaryNav.querySelectorAll('a[href^="#"]')];
 const observedSections = navLinks
   .map((link) => document.querySelector(link.getAttribute('href')))

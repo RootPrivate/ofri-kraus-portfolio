@@ -28,7 +28,7 @@
   <link rel="canonical" id="canonical-url" href="./">
   <link rel="icon" href="assets/optimized/favicon.png" type="image/png" sizes="64x64">
   <link rel="preload" as="image" href="assets/optimized/hero-960.webp" type="image/webp" media="(max-width: 767px)" fetchpriority="high">
-  <link rel="preload" as="image" href="assets/optimized/hero.webp" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/optimized/hero-960.webp" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
   <link rel="stylesheet" href="styles.css">
 
   <script>
@@ -94,10 +94,33 @@
 
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero-media" aria-hidden="true">
-      <img src="assets/optimized/hero.webp" srcset="assets/optimized/hero-960.webp 960w, assets/optimized/hero.webp 1333w" sizes="100vw" alt="" width="1333" height="2000" fetchpriority="high" decoding="async">
+      <img src="assets/optimized/hero-960.webp" srcset="assets/optimized/hero-960.webp 960w, assets/optimized/hero.webp 1333w" sizes="(min-width: 768px) 55vw, 100vw" alt="" width="960" height="1440" fetchpriority="high" decoding="async">
     </div>
     <div class="hero-shade" aria-hidden="true"></div>
     <div class="hero-curtain" aria-hidden="true"></div>
+
+    <div class="hero-stage" data-tilt aria-hidden="true">
+      <div class="hero-stage-shadow"></div>
+      <div class="hero-stage-main">
+        <div class="hero-stage-topline">
+          <span>עופרי קראוס</span>
+          <span>DIRECTOR / FILMMAKER</span>
+        </div>
+        <img src="assets/optimized/hero-960.webp" alt="" width="960" height="1440" loading="eager" fetchpriority="high" decoding="async">
+        <div class="hero-stage-caption">
+          <span>Commercial film</span>
+          <span>Selected work</span>
+        </div>
+      </div>
+      <div class="hero-stage-float hero-stage-float-one">
+        <img src="assets/optimized/thumb-03.webp" alt="" width="810" height="1440" loading="eager" decoding="async">
+        <span>Motion</span>
+      </div>
+      <div class="hero-stage-float hero-stage-float-two">
+        <img src="assets/optimized/photo-06.webp" alt="" width="1600" height="1067" loading="eager" decoding="async">
+        <span>Stillness</span>
+      </div>
+    </div>
 
     <div class="hero-content">
       <h1 id="hero-title">עופרי קראוס</h1>
