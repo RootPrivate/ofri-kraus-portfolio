@@ -128,14 +128,18 @@ observedSections.forEach((section) => sectionObserver.observe(section));
 const projectRail = document.getElementById('project-rail');
 const railStep = () => Math.max(280, Math.round(projectRail.clientWidth * 0.72));
 const railBehavior = reducedMotion ? 'auto' : 'smooth';
+const railNext = document.getElementById('rail-next');
+const railPrevious = document.getElementById('rail-previous');
 
-document.getElementById('rail-next').addEventListener('click', () => {
-  projectRail.scrollBy({ left: -railStep(), behavior: railBehavior });
-});
+if (projectRail && railNext && railPrevious) {
+  railNext.addEventListener('click', () => {
+    projectRail.scrollBy({ left: -railStep(), behavior: railBehavior });
+  });
 
-document.getElementById('rail-previous').addEventListener('click', () => {
-  projectRail.scrollBy({ left: railStep(), behavior: railBehavior });
-});
+  railPrevious.addEventListener('click', () => {
+    projectRail.scrollBy({ left: railStep(), behavior: railBehavior });
+  });
+}
 
 const lightbox = document.getElementById('lightbox');
 const lightboxTitle = document.getElementById('lightbox-title');
