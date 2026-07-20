@@ -34,6 +34,15 @@
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+@font-face {
+  font-family: "Heebo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("assets/fonts/heebo-hebrew.woff2") format("woff2");
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+
 *,
 *::before,
 *::after {
@@ -54,7 +63,7 @@ body {
   overflow-x: clip;
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: "Arial Hebrew", "Noto Sans Hebrew", Arial, system-ui, sans-serif;
+  font-family: "Heebo", "Noto Sans Hebrew", "Arial Hebrew", Arial, system-ui, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.65;
@@ -524,7 +533,7 @@ p {
 .icon-button span,
 .lightbox-close span {
   display: block;
-  font-family: Arial, sans-serif;
+  font-family: "Heebo", Arial, sans-serif;
   font-size: 28px;
   font-weight: 400;
   line-height: 1;
@@ -1618,7 +1627,7 @@ body::before {
   justify-content: space-between;
   direction: ltr;
   color: #cbd6db;
-  font-family: Arial, sans-serif;
+  font-family: "Heebo", Arial, sans-serif;
   font-size: 10px;
   font-weight: 700;
   line-height: 1;
@@ -1656,7 +1665,7 @@ body::before {
   padding-block-start: 8px;
   direction: ltr;
   color: #aab6bc;
-  font-family: Arial, sans-serif;
+  font-family: "Heebo", Arial, sans-serif;
   font-size: 10px;
   font-weight: 700;
   line-height: 1;
