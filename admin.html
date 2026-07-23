@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="theme-color" content="#0B100F">
+  <title>ניהול האתר | עופרי קראוס</title>
+  <link rel="icon" href="assets/optimized/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <main class="auth-view" id="auth-view">
+    <section class="auth-panel" aria-labelledby="login-title">
+      <a class="admin-brand" href="/">עופרי קראוס</a>
+      <div class="auth-copy">
+        <h1 id="login-title">ניהול האתר</h1>
+        <p>כניסת בעלים</p>
+      </div>
+      <form class="auth-form" id="login-form">
+        <label>
+          <span>אימייל</span>
+          <input id="login-email" name="email" type="email" value="ofrikr60@gmail.com" autocomplete="username" required>
+        </label>
+        <label>
+          <span>סיסמה</span>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <p class="form-error" id="login-error" role="alert" hidden></p>
+        <button class="primary-command" type="submit">כניסה</button>
+      </form>
+    </section>
+  </main>
+
+  <div class="admin-app" id="admin-app" hidden>
+    <header class="admin-header">
+      <div class="admin-header-brand">
+        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="פתיחת תפריט הניהול" aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+        <span>עופרי קראוס</span>
+        <small>ניהול אתר</small>
+      </div>
+      <div class="admin-header-actions">
+        <span class="save-state" id="save-state">שמור</span>
+        <a class="secondary-command" href="/" target="_blank" rel="noopener">צפייה באתר</a>
+        <button class="icon-command" id="logout-button" type="button" title="יציאה" aria-label="יציאה">↪</button>
+      </div>
+    </header>
+
+    <div class="admin-layout">
+      <aside class="admin-sidebar" id="admin-sidebar" aria-label="ניווט ניהול">
+        <nav class="admin-nav">
+          <button class="is-active" type="button" data-panel="overview">סקירה וסדר</button>
+          <button type="button" data-panel="site">אתר וניווט</button>
+          <button type="button" data-panel="hero">פתיח</button>
+          <button type="button" data-panel="work">סרטים</button>
+          <button type="button" data-panel="stills">סטילס</button>
+          <button type="button" data-panel="about">אודות</button>
+          <button type="button" data-panel="contact">יצירת קשר</button>
+          <button type="button" data-panel="appearance">מראה</button>
+          <button type="button" data-panel="media">ספריית מדיה</button>
+          <button type="button" data-panel="account">חשבון</button>
+        </nav>
+        <div class="owner-chip">
+          <span>מחובר כעת</span>
+          <strong id="owner-email">-</strong>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+        <div class="security-banner" id="security-banner" role="alert" hidden>
+          <strong>נדרש שינוי סיסמה</strong>
+          <span>יש להחליף את הסיסמה הזמנית לפני עריכת האתר.</span>
+          <button type="button" data-open-account>מעבר לחשבון</button>
+        </div>
+
+        <form id="content-form">
+          <section class="admin-panel is-active" data-panel-view="overview" aria-labelledby="overview-title">
+            <div class="panel-heading">
+              <div>
+                <h1 id="overview-title">סקירה וסדר</h1>
+                <p id="last-updated">טרם נשמרו שינויים</p>
+              </div>
+            </div>
+            <div class="section-order" id="section-order"></div>
+          </section>
+
+          <section class="admin-panel" data-panel-view="site" aria-labelledby="site-title">
+            <div class="panel-heading"><h1 id="site-title">אתר וניווט</h1></div>
+            <div class="form-grid">
+              <label><span>שם המותג</span><input type="text" data-path="site.brandName" maxlength="100"></label>
+              <label class="field-wide"><span>כותרת הדפדפן</span><input type="text" data-path="site.pageTitle" maxlength="180"></label>
+              <label class="field-wide"><span>תיאור האתר</span><textarea data-path="site.metaDescription" maxlength="320" rows="3"></textarea></label>
+              <label><span>ניווט סרטים</span><input type="text" data-path="site.nav.work" maxlength="40"></label>
+              <label><span>ניווט סטילס</span><input type="text" data-path="site.nav.stills" maxlength="40"></label>
+              <label><span>ניווט אודות</span><input type="text" data-path="site.nav.about" maxlength="40"></label>
+              <label><span>ניווט יצירת קשר</span><input type="text" data-path="site.nav.contact" maxlength="40"></label>
+            </div>
+          </section>
+
+          <section class="admin-panel" data-panel-view="hero" aria-labelledby="hero-admin-title">
+            <div class="panel-heading"><h1 id="hero-admin-title">פתיח</h1></div>
+            <div class="form-grid">
+              <label><span>כותרת</span><input type="text" data-path="hero.title" maxlength="120"></label>
+              <label class="field-wide"><span>טקסט</span><textarea data-path="hero.description" maxlength="600" rows="4"></textarea></label>
+              <label><span>כפתור ראשי</span><input type="text" data-path="hero.primaryCta.label" maxlength="80"></label>
+              <label><span>קישור כפתור ראשי</span><input type="text" data-path="hero.primaryCta.href" maxlength="1800" dir="ltr"></label>
+              <label><span>כפתור משני</span><input type="text" data-path="hero.secondaryCta.label" maxlength="80"></label>
+              <label><span>קישור כפתור משני</span><input type="text" data-path="hero.secondaryCta.href" maxlength="1800" dir="ltr"></label>
+              <div class="field-wide media-input" data-media-field="hero.backgroundImage"><span>תמונת רקע</span></div>
+              <div class="media-input" data-media-field="hero.mainImage"><span>תמונה ראשית</span></div>
+              <div class="media-input" data-media-field="hero.topImage"><span>טאמנייל עליון</span></div>
+              <div class="media-input" data-media-field="hero.bottomImage"><span>תמונת סטילס צפה</span></div>
+            </div>
+            <div class="subsection-heading"><h2>פס תחומים</h2><button class="small-command" id="add-discipline" type="button">הוספת תחום</button></div>
+            <div class="compact-list" id="discipline-list"></div>
+          </section>
+
+          <section class="admin-panel" data-panel-view="work" aria-labelledby="work-admin-title">
+            <div class="panel-heading">
+              <h1 id="work-admin-title">סרטים</h1>
+              <button class="small-command" id="add-project" type="button">הוספת פרויקט</button>
+            </div>
+            <div class="form-grid section-copy-fields">
+              <label><span>כותרת הסקשן</span><input type="text" data-path="work.title" maxlength="180"></label>
+              <label class="field-wide"><span>טקסט הסקשן</span><textarea data-path="work.description" maxlength="2200" rows="5"></textarea></label>
+            </div>
+            <div class="item-list" id="project-list"></div>
+          </section>
+
+          <section class="admin-panel" data-panel-view="stills" aria-labelledby="stills-admin-title">
+            <div class="panel-heading">
+              <h1 id="stills-admin-title">סטילס</h1>
+              <button class="small-command" id="add-still" type="button">הוספת תמונה</button>
+            </div>
+            <div class="form-grid section-copy-fields">
+              <label><span>כותרת הסקשן</span><input type="text" data-path="stills.title" maxlength="180"></label>
+              <label class="field-wide"><span>טקסט הסקשן</span><textarea data-path="stills.description" maxlength="2200" rows="5"></textarea></label>
+            </div>
+            <div class="image-editor-grid" id="still-list"></div>
+          </section>
+
+          <section class="admin-panel" data-panel-view="about" aria-labelledby="about-admin-title">
+            <div class="panel-heading"><h1 id="about-admin-title">אודות</h1></div>
+            <div class="form-grid">
+              <label class="field-wide"><span>כותרת</span><input type="text" data-path="about.title" maxlength="180"></label>
+              <div class="field-wide media-input" data-media-field="about.image"><span>תמונה</span></div>
+              <label class="field-wide"><span>תיאור התמונה</span><input type="text" data-path="about.imageAlt" maxlength="240"></label>
+            </div>
+            <div class="subsection-heading"><h2>פסקאות</h2><button class="small-command" id="add-about-paragraph" type="button">הוספת פסקה</button></div>
+            <div class="compact-list" id="about-paragraphs"></div>
+          </section>
+
+          <section class="admin-panel" data-panel-view="contact" aria-labelledby="contact-admin-title">
+            <div class="panel-heading"><h1 id="contact-admin-title">יצירת קשר</h1></div>
+            <div class="form-grid">
+              <label><span>שורת כותרת ראשונה</span><input type="text" data-path="contact.titleLineOne" maxlength="100"></label>
+              <label><span>שורת כותרת שנייה</span><input type="text" data-path="contact.titleLineTwo" maxlength="100"></label>
+              <label class="field-wide"><span>טקסט</span><textarea data-path="contact.description" maxlength="420" rows="3"></textarea></label>
+              <label><span>טקסט WhatsApp</span><input type="text" data-path="contact.whatsappLabel" maxlength="100"></label>
+              <label><span>קישור WhatsApp</span><input type="url" data-path="contact.whatsappUrl" maxlength="1800" dir="ltr"></label>
+              <label><span>תווית אימייל</span><input type="text" data-path="contact.emailLabel" maxlength="60"></label>
+              <label><span>אימייל</span><input type="email" data-path="contact.email" maxlength="180" dir="ltr"></label>
+              <label><span>תווית טלפון</span><input type="text" data-path="contact.phoneLabel" maxlength="60"></label>
+              <label><span>טלפון לתצוגה</span><input type="text" data-path="contact.phoneDisplay" maxlength="60" dir="ltr"></label>
+              <label><span>קישור טלפון</span><input type="text" data-path="contact.phoneHref" maxlength="180" dir="ltr"></label>
+              <label><span>שם בזכויות יוצרים</span><input type="text" data-path="footer.copyrightName" maxlength="100"></label>
+              <label><span>טקסט Instagram</span><input type="text" data-path="footer.instagramLabel" maxlength="60"></label>
+              <label><span>קישור Instagram</span><input type="url" data-path="footer.instagramUrl" maxlength="1800" dir="ltr"></label>
+              <label><span>טקסט WhatsApp בפוטר</span><input type="text" data-path="footer.whatsappLabel" maxlength="60"></label>
+            </div>
+          </section>
+
+          <section class="admin-panel" data-panel-view="appearance" aria-labelledby="appearance-title">
+            <div class="panel-heading"><h1 id="appearance-title">מראה</h1></div>
+            <div class="appearance-grid">
+              <label class="color-field"><span>צבע מותג</span><input type="color" data-path="appearance.accent"><output data-color-output="appearance.accent"></output></label>
+              <label class="color-field"><span>רקע</span><input type="color" data-path="appearance.background"><output data-color-output="appearance.background"></output></label>
+              <label class="color-field"><span>משטח</span><input type="color" data-path="appearance.surface"><output data-color-output="appearance.surface"></output></label>
+              <label class="color-field"><span>טקסט</span><input type="color" data-path="appearance.text"><output data-color-output="appearance.text"></output></label>
+              <label><span>רדיוס תמונות</span><input type="number" data-path="appearance.radius" min="4" max="24" step="1"></label>
+              <label><span>גופן</span><select data-path="appearance.fontPreset"><option value="heebo">Heebo</option><option value="system">מערכת</option></select></label>
+              <label><span>צפיפות</span><select data-path="appearance.density"><option value="compact">קומפקטי</option><option value="comfortable">מאוזן</option><option value="airy">אוורירי</option></select></label>
+              <label class="toggle-field"><input type="checkbox" data-path="appearance.motion"><span>אנימציות פעילות</span></label>
+            </div>
+          </section>
+
+          <section class="admin-panel" data-panel-view="media" aria-labelledby="media-title">
+            <div class="panel-heading"><h1 id="media-title">ספריית מדיה</h1></div>
+            <div class="media-toolbar">
+              <label class="upload-command">
+                <span>העלאת תמונה</span>
+                <input id="library-upload" type="file" accept="image/jpeg,image/png,image/webp,image/avif">
+              </label>
+              <span id="media-count">0 תמונות</span>
+            </div>
+            <p class="form-error" id="media-error" role="alert" hidden></p>
+            <div class="media-library" id="media-library"></div>
+          </section>
+        </form>
+
+        <section class="admin-panel" data-panel-view="account" aria-labelledby="account-title">
+          <div class="panel-heading"><h1 id="account-title">חשבון</h1></div>
+          <form class="account-form" id="account-form">
+            <label><span>אימייל כניסה חדש</span><input id="account-email" name="email" type="email" autocomplete="username" required></label>
+            <label><span>סיסמה נוכחית</span><input id="current-password" name="currentPassword" type="password" autocomplete="current-password" required></label>
+            <label><span>סיסמה חדשה</span><input id="new-password" name="newPassword" type="password" autocomplete="new-password" minlength="10" required></label>
+            <label><span>אימות סיסמה חדשה</span><input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" minlength="10" required></label>
+            <p class="form-error" id="account-error" role="alert" hidden></p>
+            <button class="primary-command" type="submit">עדכון פרטי כניסה</button>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <div class="save-bar">
+      <span id="unsaved-label">אין שינויים שלא נשמרו</span>
+      <button class="primary-command" id="save-button" type="button" disabled>שמירת האתר</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

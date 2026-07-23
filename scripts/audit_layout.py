@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 import time
 
 from selenium import webdriver
@@ -7,6 +8,7 @@ from selenium.webdriver.common.by import By
 
 ROOT = Path(__file__).resolve().parents[1]
 EDGE = Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
+BASE_URL = os.environ.get("SITE_URL", "http://localhost:4173")
 
 
 def create_driver(width: int, height: int) -> webdriver.Edge:
@@ -32,7 +34,7 @@ def audit_viewport(width: int, height: int, name: str) -> None:
                 "mobile": width < 768,
             },
         )
-        driver.get((ROOT / "index.html").as_uri())
+        driver.get(BASE_URL)
         driver.implicitly_wait(2)
         time.sleep(1.2)
         metrics = driver.execute_script(

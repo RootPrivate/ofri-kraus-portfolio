@@ -2586,3 +2586,35 @@ body {
     -webkit-backdrop-filter: none;
   }
 }
+
+/* CMS appearance controls. */
+[hidden] {
+  display: none !important;
+}
+
+body[data-font-preset="system"] {
+  font-family: Arial, "Arial Hebrew", system-ui, sans-serif;
+}
+
+body[data-density="compact"] {
+  --space-12: 80px;
+  --space-16: 104px;
+}
+
+body[data-density="airy"] {
+  --space-12: 112px;
+  --space-16: 152px;
+}
+
+body.cms-motion-off,
+body.cms-motion-off * {
+  scroll-behavior: auto !important;
+}
+
+body.cms-motion-off *,
+body.cms-motion-off *::before,
+body.cms-motion-off *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}

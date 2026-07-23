@@ -43,7 +43,7 @@
     }
   </script>
 
-  <script type="application/ld+json">
+  <script type="application/ld+json" id="person-structured-data">
   {
     "@context": "https://schema.org",
     "@graph": [
@@ -92,7 +92,8 @@
     </div>
   </header>
 
-  <section class="hero" id="top" aria-labelledby="hero-title">
+  <main id="main-content">
+  <section class="hero" id="top" data-cms-section="hero" aria-labelledby="hero-title">
     <div class="hero-media" aria-hidden="true">
       <img src="assets/optimized/hero-960.webp" srcset="assets/optimized/hero-960.webp 960w, assets/optimized/hero.webp 1333w" sizes="(min-width: 768px) 55vw, 100vw" alt="" width="960" height="1440" fetchpriority="high" decoding="async">
     </div>
@@ -105,10 +106,10 @@
         <img src="assets/optimized/hero-960.webp" alt="" width="960" height="1440" loading="eager" fetchpriority="high" decoding="async">
       </div>
       <div class="hero-stage-float hero-stage-float-one">
-        <img src="assets/optimized/thumb-03.webp" alt="" width="810" height="1440" loading="eager" decoding="async">
+        <img src="assets/optimized/thumb-01.webp" alt="" width="810" height="1440" loading="eager" decoding="async">
       </div>
       <div class="hero-stage-float hero-stage-float-two">
-        <img src="assets/optimized/photo-06.webp" alt="" width="1600" height="1067" loading="eager" decoding="async">
+        <img src="assets/optimized/photo-02.webp" alt="" width="1067" height="1600" loading="eager" decoding="async">
       </div>
     </div>
 
@@ -122,7 +123,7 @@
     </div>
   </section>
 
-  <aside class="discipline-band" aria-label="תחומי יצירה">
+  <aside class="discipline-band" data-cms-section="discipline" aria-label="תחומי יצירה">
     <div class="discipline-inner">
       <span>פרסומות</span>
       <span>סרטי מותג</span>
@@ -130,8 +131,7 @@
     </div>
   </aside>
 
-  <main id="main-content">
-    <section class="section work-section" id="work" aria-labelledby="work-title">
+    <section class="section work-section" id="work" data-cms-section="work" aria-labelledby="work-title">
       <div class="section-intro" data-reveal>
         <h2 id="work-title">מאחורי כל סרטון עומד סיפור</h2>
         <p>שיווק לא חייב להיות ישיר. כל פרסומת שאתם רואים מספרת סיפור בצורה כזו שגורמת לכם להרגיש משהו. טוב, רע, כעס, עצב, הזדהות - מכירה זו אומנות. ובזה אני מתמחה.</p>
@@ -214,7 +214,7 @@
       </div>
     </section>
 
-    <section class="section stills-section" id="stills" aria-labelledby="stills-title">
+    <section class="section stills-section" id="stills" data-cms-section="stills" aria-labelledby="stills-title">
       <div class="section-intro" data-reveal>
         <h2 id="stills-title">פחות ממאית השניה</h2>
         <p>תמונות זה לא רק תיעוד. הידעתם? תמונה ממוצעת מראה פחות ממאית השניה. אותו חלקיק שניה שאתם רואים כתמונה ערוכה היא לא רק מזכרת יפה, היא חלק מאסטרטגיית תוכן שתשרת אתכם, כי התמונות האלה, עם קריאייטיב נכון, יביאו את הלקוח הבא שלכם.</p>
@@ -274,7 +274,7 @@
       </div>
     </section>
 
-    <section class="section about-section" id="about" aria-labelledby="about-title">
+    <section class="section about-section" id="about" data-cms-section="about" aria-labelledby="about-title">
       <div class="about-media" data-reveal>
         <img src="assets/optimized/hero.webp" alt="עופרי קראוס עומד בחוץ ומחזיק מצלמה" width="1333" height="2000" loading="lazy" decoding="async">
       </div>
@@ -286,7 +286,7 @@
       </div>
     </section>
 
-    <section class="contact-section" id="contact" aria-labelledby="contact-title">
+    <section class="contact-section" id="contact" data-cms-section="contact" aria-labelledby="contact-title">
       <div class="contact-content" data-reveal>
         <div class="contact-copy">
           <h2 id="contact-title"><span>ספרו לי מה אתם</span><span>רוצים למתג.</span></h2>
@@ -339,6 +339,6 @@
     </div>
   </dialog>
 
-  <script src="script.js" defer></script>
+  <script src="script.js" type="module"></script>
 </body>
 </html>

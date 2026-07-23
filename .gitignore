@@ -7,3 +7,4 @@ __pycache__/
 assets/DS_Store
 assets/*.jpeg
 .env*
+*.log
