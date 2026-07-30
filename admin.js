@@ -1,9 +1,12 @@
+import { upload } from "./admin-upload.bundle.js";
+
 const state = {
   owner: null,
   content: null,
   media: [],
   dirty: false,
   saving: false,
+  uploading: false,
   activePanel: "overview"
 };
 
@@ -136,7 +139,7 @@ function createLabeledField(labelText, value, onInput, options = {}) {
   return { label, input };
 }
 
-function createMediaField(labelText, value, onValue, onUploaded) {
+function createMediaField(labelText, value, onValue, onUploaded, options = {}) {
   const wrapper = document.createElement("label");
   wrapper.className = "media-input";
   const caption = document.createElement("span");
@@ -151,18 +154,25 @@ function createMediaField(labelText, value, onValue, onUploaded) {
 
   const upload = document.createElement("label");
   upload.className = "upload-inline";
-  upload.textContent = "העלאה";
+  upload.textContent = options.uploadLabel || "העלאה מהמכשיר";
   const fileInput = document.createElement("input");
   fileInput.type = "file";
-  fileInput.accept = "image/jpeg,image/png,image/webp,image/avif";
+  fileInput.accept = options.accept || "image/jpeg,image/png,image/webp,image/avif";
   fileInput.addEventListener("change", async () => {
     const file = fileInput.files?.[0];
     if (!file) return;
     try {
-      const media = await uploadImage(file);
+      const selectedKind = file.type.startsWith("image/") ? "image" : videoDetails(file) ? "video" : "unsupported";
+      const allowedKinds = options.allowedKinds || ["image"];
+      if (!allowedKinds.includes(selectedKind)) {
+        throw new Error(allowedKinds.includes("video") ? "יש לבחור תמונה או וידאו נתמך" : "יש לבחור תמונת JPG, PNG, WebP או AVIF");
+      }
+      const media = await uploadMedia(file);
       input.value = media.url;
       onValue(media.url);
-      onUploaded?.(media.url);
+      onUploaded?.(media);
+    } catch (error) {
+      showToast(error.message || "העלאת הקובץ נכשלה", true);
     } finally {
       fileInput.value = "";
     }
@@ -361,10 +371,17 @@ function renderProjects() {
       project.mediaType = value;
       markDirty();
     }, { select: [["video", "וידאו"], ["image", "תמונה"]] });
-    const sourceField = createLabeledField("קישור למדיה", project.mediaSrc, (value) => {
+    const sourceField = createMediaField("קובץ המדיה", project.mediaSrc, (value) => {
       project.mediaSrc = value;
       markDirty();
-    }, { ltr: true, maxLength: 1800 });
+    }, (media) => {
+      project.mediaType = media.kind;
+      typeField.input.value = media.kind;
+      markDirty();
+    }, {
+      accept: "image/jpeg,image/png,image/webp,image/avif,video/mp4,video/webm,video/quicktime,.mov",
+      allowedKinds: ["image", "video"]
+    });
     const posterField = createMediaField("תמונת קאבר", project.poster, (value) => {
       project.poster = value;
       markDirty();
@@ -373,7 +390,7 @@ function renderProjects() {
       project.alt = value;
       markDirty();
     }, { maxLength: 240 });
-    grid.append(titleField.label, formatField.label, typeField.label, sourceField.label, posterField.wrapper, altField.label);
+    grid.append(titleField.label, formatField.label, typeField.label, sourceField.wrapper, posterField.wrapper, altField.label);
     card.append(header, grid);
     container.append(card);
   });
@@ -399,8 +416,8 @@ function renderStills() {
       still.src = value;
       image.src = safePreviewUrl(value);
       markDirty();
-    }, (value) => {
-      image.src = safePreviewUrl(value);
+    }, (media) => {
+      image.src = safePreviewUrl(media.url);
     });
     const altField = createLabeledField("תיאור נגיש", still.alt, (value) => {
       still.alt = value;
@@ -499,14 +516,20 @@ function formatBytes(bytes) {
 function renderMediaLibrary() {
   const container = document.getElementById("media-library");
   container.replaceChildren();
-  document.getElementById("media-count").textContent = `${state.media.length} תמונות`;
+  document.getElementById("media-count").textContent = `${state.media.length} פריטי מדיה`;
   state.media.forEach((media) => {
     const card = document.createElement("article");
     card.className = "media-card";
-    const image = document.createElement("img");
-    image.src = media.url;
-    image.alt = "";
-    image.loading = "lazy";
+    const preview = document.createElement(media.kind === "video" ? "video" : "img");
+    preview.src = media.url;
+    if (media.kind === "video") {
+      preview.controls = true;
+      preview.muted = true;
+      preview.preload = "metadata";
+    } else {
+      preview.alt = "";
+      preview.loading = "lazy";
+    }
     const body = document.createElement("div");
     body.className = "media-card-body";
     const meta = document.createElement("small");
@@ -518,19 +541,19 @@ function renderMediaLibrary() {
       showToast("הקישור הועתק");
     });
     const remove = createButton("מחיקה", "row-command danger-command", async () => {
-      if (!window.confirm("למחוק את התמונה מספריית המדיה?")) return;
+      if (!window.confirm("למחוק את הקובץ מספריית המדיה?")) return;
       try {
         await apiRequest("/api/media", { method: "DELETE", body: JSON.stringify({ pathname: media.pathname }) });
         state.media = state.media.filter((item) => item.pathname !== media.pathname);
         renderMediaLibrary();
-        showToast("התמונה נמחקה");
+        showToast("הקובץ נמחק");
       } catch (error) {
         showToast(error.message, true);
       }
     });
     actions.append(copy, remove);
     body.append(meta, actions);
-    card.append(image, body);
+    card.append(preview, body);
     container.append(card);
   });
 }
@@ -562,6 +585,77 @@ async function uploadImage(file) {
   } catch (error) {
     showToast(error.message, true);
     throw error;
+  }
+}
+
+const videoTypes = {
+  "video/mp4": "mp4",
+  "video/webm": "webm",
+  "video/quicktime": "mov"
+};
+
+function videoDetails(file) {
+  const extension = file.name.split(".").pop()?.toLowerCase();
+  const inferredType = extension === "mov" ? "video/quicktime" : extension === "mp4" ? "video/mp4" : extension === "webm" ? "video/webm" : "";
+  const contentType = videoTypes[file.type] ? file.type : inferredType;
+  return contentType ? { contentType, extension: videoTypes[contentType] } : null;
+}
+
+function setUploadProgress(visible, percentage = 0) {
+  const wrapper = document.getElementById("upload-progress");
+  const bar = document.getElementById("upload-progress-bar");
+  const label = document.getElementById("upload-progress-label");
+  wrapper.hidden = !visible;
+  bar.value = percentage;
+  label.textContent = `מעלה וידאו... ${Math.round(percentage)}%`;
+  if (visible) showToast(label.textContent);
+}
+
+async function uploadVideo(file) {
+  const details = videoDetails(file);
+  if (!details || file.size <= 0 || file.size > 250 * 1024 * 1024) {
+    throw new Error("יש לבחור וידאו MP4, WebM או MOV עד 250MB");
+  }
+
+  const pathname = `cms/media/${Date.now()}-${crypto.randomUUID()}.${details.extension}`;
+  setUploadProgress(true, 0);
+  try {
+    const blob = await upload(pathname, file, {
+      access: "private",
+      handleUploadUrl: "/api/media-upload",
+      contentType: details.contentType,
+      multipart: file.size > 10 * 1024 * 1024,
+      onUploadProgress: ({ percentage }) => setUploadProgress(true, percentage)
+    });
+    const media = {
+      pathname: blob.pathname,
+      url: `/api/media-file?path=${encodeURIComponent(blob.pathname)}`,
+      kind: "video",
+      contentType: details.contentType,
+      size: file.size,
+      uploadedAt: new Date().toISOString()
+    };
+    state.media = [media, ...state.media.filter((item) => item.pathname !== media.pathname)];
+    renderMediaLibrary();
+    showToast("הווידאו הועלה ומוכן לשימוש");
+    return media;
+  } catch (error) {
+    showToast(error.message || "העלאת הווידאו נכשלה", true);
+    throw error;
+  } finally {
+    setUploadProgress(false);
+  }
+}
+
+async function uploadMedia(file) {
+  if (state.uploading) throw new Error("קובץ אחר כבר בתהליך העלאה");
+  state.uploading = true;
+  try {
+    if (file.type.startsWith("image/")) return await uploadImage(file);
+    if (videoDetails(file)) return await uploadVideo(file);
+    throw new Error("יש לבחור תמונת JPG, PNG, WebP או AVIF, או וידאו MP4, WebM או MOV");
+  } finally {
+    state.uploading = false;
   }
 }
 
@@ -656,6 +750,10 @@ accountForm.addEventListener("submit", async (event) => {
   setFormError(accountError);
   const newPassword = document.getElementById("new-password").value;
   const confirmation = document.getElementById("confirm-password").value;
+  if (newPassword.length < 12 || !/[a-z]/.test(newPassword) || !/[A-Z]/.test(newPassword) || !/\d/.test(newPassword) || !/[^A-Za-z0-9]/.test(newPassword)) {
+    setFormError(accountError, "הסיסמה צריכה לכלול לפחות 12 תווים, אות גדולה, אות קטנה, מספר וסימן");
+    return;
+  }
   if (newPassword !== confirmation) {
     setFormError(accountError, "אימות הסיסמה אינו תואם");
     return;
@@ -749,9 +847,9 @@ document.getElementById("library-upload").addEventListener("change", async (even
   const file = event.target.files?.[0];
   if (!file) return;
   try {
-    await uploadImage(file);
-  } catch {
-    // The upload helper already reports the error.
+    await uploadMedia(file);
+  } catch (error) {
+    showToast(error.message || "העלאת הקובץ נכשלה", true);
   } finally {
     event.target.value = "";
   }

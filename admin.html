@@ -20,7 +20,7 @@
       <form class="auth-form" id="login-form">
         <label>
           <span>אימייל</span>
-          <input id="login-email" name="email" type="email" value="ofrikr60@gmail.com" autocomplete="username" required>
+          <input id="login-email" name="email" type="email" autocomplete="username" required>
         </label>
         <label>
           <span>סיסמה</span>
@@ -191,10 +191,14 @@
             <div class="panel-heading"><h1 id="media-title">ספריית מדיה</h1></div>
             <div class="media-toolbar">
               <label class="upload-command">
-                <span>העלאת תמונה</span>
-                <input id="library-upload" type="file" accept="image/jpeg,image/png,image/webp,image/avif">
+                <span>העלאת תמונה או וידאו</span>
+                <input id="library-upload" type="file" accept="image/jpeg,image/png,image/webp,image/avif,video/mp4,video/webm,video/quicktime,.mov">
               </label>
-              <span id="media-count">0 תמונות</span>
+              <span id="media-count">0 פריטי מדיה</span>
+            </div>
+            <div class="upload-progress" id="upload-progress" hidden>
+              <span id="upload-progress-label">מעלה קובץ...</span>
+              <progress id="upload-progress-bar" max="100" value="0" aria-labelledby="upload-progress-label"></progress>
             </div>
             <p class="form-error" id="media-error" role="alert" hidden></p>
             <div class="media-library" id="media-library"></div>
@@ -206,8 +210,9 @@
           <form class="account-form" id="account-form">
             <label><span>אימייל כניסה חדש</span><input id="account-email" name="email" type="email" autocomplete="username" required></label>
             <label><span>סיסמה נוכחית</span><input id="current-password" name="currentPassword" type="password" autocomplete="current-password" required></label>
-            <label><span>סיסמה חדשה</span><input id="new-password" name="newPassword" type="password" autocomplete="new-password" minlength="10" required></label>
-            <label><span>אימות סיסמה חדשה</span><input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" minlength="10" required></label>
+            <label><span>סיסמה חדשה</span><input id="new-password" name="newPassword" type="password" autocomplete="new-password" minlength="12" required></label>
+            <label><span>אימות סיסמה חדשה</span><input id="confirm-password" name="confirmPassword" type="password" autocomplete="new-password" minlength="12" required></label>
+            <p class="account-hint">לפחות 12 תווים, כולל אות גדולה, אות קטנה, מספר וסימן.</p>
             <p class="form-error" id="account-error" role="alert" hidden></p>
             <button class="primary-command" type="submit">עדכון פרטי כניסה</button>
           </form>

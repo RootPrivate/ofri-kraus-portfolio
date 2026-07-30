@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { requireOwner } from "../lib/cms-auth.js";
-import { deleteMedia, listMedia, MEDIA_PREFIX, publicMediaUrl, readContent, saveMedia } from "../lib/cms-store.js";
+import { deleteMedia, isManagedMediaPath, listMedia, MEDIA_PREFIX, publicMediaUrl, readContent, saveMedia } from "../lib/cms-store.js";
 import { assertSameOrigin, methodNotAllowed, readJsonBody, safeError, sendJson } from "../lib/http.js";
 
 const MAX_IMAGE_BYTES = 2_800_000;
@@ -63,6 +63,8 @@ export default async function handler(req, res) {
         media: {
           pathname,
           url: publicMediaUrl(pathname),
+          kind: "image",
+          contentType: image.type,
           size: buffer.length,
           uploadedAt: new Date().toISOString()
         }
@@ -74,7 +76,7 @@ export default async function handler(req, res) {
       await requireOwner(req);
       const body = await readJsonBody(req, 10_000);
       const pathname = typeof body.pathname === "string" ? body.pathname : "";
-      if (!pathname.startsWith(MEDIA_PREFIX)) {
+      if (!isManagedMediaPath(pathname)) {
         const error = new Error("Invalid media path");
         error.status = 400;
         throw error;
