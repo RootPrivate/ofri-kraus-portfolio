@@ -74,4 +74,7 @@ const sensitiveSources = await Promise.all([
 ].map((path) => readFile(new URL(path, import.meta.url), "utf8")));
 assert.doesNotMatch(sensitiveSources.join("\n"), /admin123|BLOB_READ_WRITE_TOKEN\s*=|CMS_SESSION_SECRET\s*=/);
 
+const vercelConfig = await readFile(new URL("../vercel.json", import.meta.url), "utf8");
+assert.match(vercelConfig, /connect-src 'self' https:\/\/vercel\.com https:\/\/\*\.blob\.vercel-storage\.com/);
+
 console.log("Security checks passed");
